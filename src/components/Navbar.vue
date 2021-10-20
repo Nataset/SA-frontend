@@ -63,17 +63,17 @@
                 <li class="nav-item active text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/">Home </router-link>
                 </li>
-                <li class="nav-item text-center mx-5">
+                <!-- <li class="nav-item text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/topup">Topup</router-link>
-                </li>
-                <li class="nav-item text-center mx-5">
+                </li> -->
+                <!-- <li class="nav-item text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/reward">Reward</router-link>
-                </li>
-                <li class="nav-item text-center mx-5">
+                </li> -->
+                <!-- <li class="nav-item text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/leaderboard"
                         >Leader board</router-link
                     >
-                </li>
+                </li> -->
                 <li class="nav-item text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/profile">Profile</router-link>
                 </li>

@@ -2,10 +2,26 @@
     <div class="mb-4" id="flex-content">
         <img v-bind:src="picURL" class="mt-4" width="250" height="250" />
         <h4 class="mt-3">{{ title }}</h4>
-        <h5 class="mt-1">Price: {{ price }} Baht</h5>
-        <div>
-            <button type="button" class="btn btn-danger px-5 mb-4" @click="buyProduct">
-                &nbsp;&nbsp;&nbsp;&nbsp;BUY NOW!!&nbsp;&nbsp;&nbsp;&nbsp;
+        <h5 class="mt-1">Point: {{ point }}</h5>
+        <div class="d-grid gap-2 col-8 mx-auto">
+            <button type="button" class="btn btn-danger mb-4" @click="buyReward" v-if="!isAdmin()">
+                REDEEM NOW!!
+            </button>
+            <button
+                type="button"
+                class="btn btn-primary mt-4 mb-1"
+                @click="showEdit"
+                v-if="isAdmin()"
+            >
+                Edit
+            </button>
+            <button
+                type="button"
+                class="btn btn-danger mb-4"
+                @click="deleteReward"
+                v-if="isAdmin()"
+            >
+                Delete
             </button>
         </div>
     </div>
@@ -18,23 +34,23 @@ import ShopStore from '@/store/Shop';
 
 export default {
     name: 'Product',
-    props: ['product', 'endPoint'],
+    props: ['reward', 'endPoint'],
     data() {
         return {
             placeholder: 'https://via.placeholder.com/250x250',
             title: '',
-            price: '',
+            point: '',
             picURL: '',
             currentUser: '',
-            purchaseFrom: {
+            redeemFrom: {
                 user: '',
-                product: '',
+                reward: '',
                 time: '',
             },
             pointFrom: {
                 type: '',
                 amount: '',
-                purchase: '',
+                reward: '',
                 user: '',
             },
             updateUserAllPoint: {
@@ -42,9 +58,14 @@ export default {
                 allPoint: 0,
                 money: 0,
             },
-            newPurchase: '',
+            newRedeem: '',
             newPoint: '',
-            updateProductStock: {
+            editFrom: {
+                name: '',
+                point: '',
+                stock: '',
+            },
+            updateRewardStock: {
                 stock: 0,
                 available: true,
                 id: 0,
@@ -52,7 +73,7 @@ export default {
         };
     },
     created() {
-        this.validProductData();
+        this.validRewardData();
         this.fetchCurrentUserdata();
     },
     methods: {
@@ -67,20 +88,92 @@ export default {
             return (await this.checkImage(url)) ? url : this.placeholder;
         },
 
-        async validProductData() {
-            this.title = this.product.name || 'PRODUCT TITLE';
-            this.price = this.product.price ? this.product.price.toFixed(2) : 'PRODUCT PRICE';
-            this.picURL = this.product.photo
-                ? await this.getValidImageUrl(this.product.photo.formats.small.url)
+        async validRewardData() {
+            this.title = this.reward.name || 'reward TITLE';
+            this.point = this.reward.point ? this.reward.point : 'REWARD POINT';
+            this.picURL = this.reward.photo
+                ? await this.getValidImageUrl(this.reward.photo.formats.small.url)
                 : this.placeholder;
         },
         fetchCurrentUserdata() {
             this.currentUser = ShopStore.getters.getCurrentUser;
         },
-        async buyProduct() {
+        setRedeenFrom() {
+            this.redeemFrom.reward = this.reward.id;
+            this.redeemFrom.user = this.currentUser.user.id;
+            this.redeemFrom.time = moment().format();
+            // console.log(this.purchaseFrom);
+        },
+        setPointFrom() {
+            this.pointFrom.type = 'REDEEM';
+            this.pointFrom.amount = this.reward.point;
+            this.pointFrom.redeem = this.newRedeem.redeem.id;
+            this.pointFrom.user = this.currentUser.user.id;
+            // console.log(this.pointFrom);
+        },
+        setUpdateUserAllPoint() {
+            this.updateUserAllPoint.id = this.currentUser.user.id;
+            this.updateUserAllPoint.allPoint =
+                parseInt(this.currentUser.user.allPoint) - parseInt(this.reward.point);
+            // console.log(this.updateUserAllPoint.allPoint);
+            this.updateUserAllPoint.money = parseInt(this.currentUser.user.money);
+        },
+        setUpdateStock() {
+            this.updateRewardStock.id = this.reward.id;
+            this.updateRewardStock.stock = parseInt(this.reward.stock) - 1;
+            if (this.updateRewardStock.stock <= 0) {
+                this.updateRewardStock.available = false;
+            }
+        },
+        isAuthen() {
+            return ShopStore.getters.isAuthen;
+        },
+        isAdmin() {
+            return ShopStore.getters.isAuthen ? ShopStore.getters.isAdmin : false;
+        },
+        async redeemReward() {
+            this.setRedeenFrom();
+            // console.log(this.redeemFrom);
+            let res = await ShopStore.dispatch('createRedeem', this.redeemFrom);
+            // console.log(res);
+            this.newRedeem = ShopStore.getters.getNewRedeem;
+            if (res.success) {
+                this.setPointFrom();
+                // console.log(this.pointFrom);
+                let res2 = await ShopStore.dispatch('createPoint', this.pointFrom);
+                // console.log(res2);
+                if (res2.success) {
+                    this.newPoint = ShopStore.getters.getNewPoint;
+                    this.setUpdateUserAllPoint();
+                    this.setUpdateStock();
+                    // console.log(this.setUpdateUserAllPoint);
+                    let res3 = await ShopStore.dispatch(
+                        'updatePointAndMoneyToUser',
+                        this.updateUserAllPoint,
+                    );
+                    if (res3.success) {
+                        this.setUpdateStock();
+                        let res4 = await ShopStore.dispatch(
+                            'updateRewardStock',
+                            this.updateRewardStock,
+                        );
+                        if (res4.success) {
+                            this.$swal(
+                                'Redeem Success',
+                                `${this.currentUser.user.username} redeem ${this.reward.name}.`,
+                                'success',
+                            ).then(() => {
+                                location.reload();
+                            });
+                        }
+                    }
+                }
+            }
+        },
+        async buyReward() {
             swal({
                 title: 'Are you sure?',
-                text: 'Please check your money',
+                text: 'Please check your point again.',
                 icon: 'warning',
                 buttons: true,
                 dangerMode: true,
@@ -93,95 +186,44 @@ export default {
                             'error',
                         );
                         this.$router.push('/login');
-                    } else if (this.isAdmin() === true) {
-                        this.$swal('You are admin.', "You can't buy shit.", 'error');
-                    } else if (this.currentUser.user.money < this.product.price) {
+                    } else if (this.isAdmin() == true) {
+                        this.$swal('You are Admin.', "You can't redeem shit too", 'error');
+                    } else if (this.currentUser.user.allPoint < this.reward.point) {
                         this.$swal(
-                            'Your money is not enough to buy',
-                            'Please topup and buy again',
+                            'Your point is not enough to buy',
+                            'Please check and redeem again',
                             'error',
                         );
                     } else {
-                        this.purchaseProduct();
+                        this.redeemReward();
                     }
                 } else {
                 }
             });
         },
-        setPurchaseFrom() {
-            this.purchaseFrom.product = this.product.id;
-            this.purchaseFrom.user = this.currentUser.user.id;
-            this.purchaseFrom.time = moment().format();
-            // console.log(this.purchaseFrom);
-        },
-        setPointFrom() {
-            this.pointFrom.type = 'RECEIVE';
-            this.pointFrom.amount = this.product.point;
-            this.pointFrom.purchase = this.newPurchase.purchase.id;
-            this.pointFrom.user = this.currentUser.user.id;
-            // console.log(this.pointFrom);
-        },
-        setUpdateUserAllPoint() {
-            this.updateUserAllPoint.id = this.currentUser.user.id;
-            this.updateUserAllPoint.allPoint =
-                parseInt(this.currentUser.user.allPoint) + parseInt(this.product.point);
-            // console.log(this.updateUserAllPoint.allPoint);
-            this.updateUserAllPoint.money =
-                parseInt(this.currentUser.user.money) - parseInt(this.product.price);
-        },
-        setUpdateStock() {
-            this.updateProductStock.id = this.product.id;
-            this.updateProductStock.stock = parseInt(this.product.stock) - 1;
-            if (this.updateProductStock.stock <= 0) {
-                this.updateProductStock.available = false;
-            }
-        },
-        isAuthen() {
-            return ShopStore.getters.isAuthen;
-        },
-        isAdmin() {
-            return ShopStore.getters.isAuthen ? ShopStore.getters.isAdmin : false;
-        },
-        async purchaseProduct() {
-            this.setPurchaseFrom();
-            let res = await ShopStore.dispatch('createPurchase', this.purchaseFrom);
-            // console.log(res);
-            this.newPurchase = ShopStore.getters.getNewPurchase;
-            // console.log(this.newPurchase);
-            if (res.success) {
-                this.setPointFrom();
-                // console.log(this.pointFrom);
-                let res2 = await ShopStore.dispatch('createPoint', this.pointFrom);
-                // console.log(res2);
-                if (res2.success) {
-                    this.newPoint = ShopStore.getters.getNewPoint;
-                    this.setUpdateUserAllPoint();
 
-                    // console.log(this.setUpdateUserAllPoint);
-                    let res3 = await ShopStore.dispatch(
-                        'updatePointAndMoneyToUser',
-                        this.updateUserAllPoint,
-                    );
-                    console.log(res3.success);
-                    if (res3.success) {
-                        this.setUpdateStock();
-                        let res4 = await ShopStore.dispatch(
-                            'updateProductStock',
-                            this.updateProductStock,
-                        );
-                        if (res4.success) {
-                            this.$swal(
-                                'Purchases Success',
-                                `${this.currentUser.user.username} purchase ${this.product.name}.`,
-                                'success',
-                            ).then(() => {
-                                location.reload();
-                            });
-                        }
-                    }
-                }
-            }
+        async deleteReward() {
+            await ShopStore.dispatch('deleteReward', this.reward.id);
+            const result = ShopStore.getters.getDeleteRewardResult;
+            result
+                ? this.$swal('Delete success', '', 'success').then(() => this.update(result))
+                : this.$swal("Something went wrong can't delete reward", '', 'error');
         },
+
+        update(result) {
+            this.$emit('send', result);
+        },
+        showEdit() {
+            this.$modal.show('edit');
+            this.$emit('send2', this.reward);
+        },
+
+        hideEdit() {
+            this.$modal.hide('edit');
+        },
+
+        onEdit() {},
+        onCancel() {},
     },
 };
 </script>

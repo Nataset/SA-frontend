@@ -82,7 +82,7 @@
 import ShopStore from '@/store/Shop';
 
 export default {
-    name: 'RewardAdd',
+    name: 'ProductAdd',
 
     data() {
         return {
