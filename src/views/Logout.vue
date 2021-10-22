@@ -4,16 +4,14 @@
 
 <script>
 // import AuthService from '@/services/AuthService'
-import ShopStore from '@/store/Shop'
+import ShopStore from '@/store/Shop';
 export default {
-    mounted(){
-        // AuthService.logout()
-        ShopStore.dispatch('logout')
-        this.$router.push('/')
-    }
-}
+    mounted() {
+        ShopStore.dispatch('logout');
+        this.$swal({ title: 'Log out Success!', icon: 'success' });
+        this.$router.push('/');
+    },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

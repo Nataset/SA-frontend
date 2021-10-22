@@ -4,7 +4,7 @@ const auth_key = 'auth-shop';
 let auth = JSON.parse(localStorage.getItem(auth_key));
 const user = auth ? auth.user : '';
 const jwt = auth ? auth.jwt : '';
-const api_endpoint = process.env.VUE_APP_SHOP_ENDPOINT || 'http://localhost:1337';
+const api_endpoint = process.env.VUE_APP_SHOP_ENDPOINT || 'http://localhost:8000';
 
 export default {
     isAuthen() {
@@ -27,16 +27,15 @@ export default {
     getJwt() {
         return jwt;
     },
-    async login({ username, password }) {
+    async login({ email, password }) {
         try {
-            let url = api_endpoint + '/auth/local';
+            let url = `${api_endpoint}/api/auth/login`;
             let body = {
-                identifier: username,
+                email: email,
                 password: password,
             };
             let res = await Axios.post(url, body);
             if (res.status === 200) {
-                // console.log(res.data);
                 localStorage.setItem(auth_key, JSON.stringify(res.data));
                 return {
                     success: true,
@@ -44,34 +43,34 @@ export default {
                     jwt: res.data.jwt,
                 };
             } else {
-                console.log('NOT 200', res);
+                console.log('Login Fail', res);
             }
         } catch (e) {
-            console.error(e);
-            if (e.response.status === 400) {
-                // console.log(e.response.data.message[0].messages[0].message);
+            if (e.response.status == 401) {
                 return {
                     success: false,
-                    message: e.response.data.message[0].messages[0].message,
+                    error: { error: ['Wrong Email Or Password'] },
                 };
             }
+            return {
+                success: false,
+                error: e.response.data,
+            };
         }
     },
 
-    async register({ username, email, password, firstname, lastname, address, money, allPoint }) {
+    async register({ email, password, firstname, lastname, address }) {
         try {
-            let url = `${api_endpoint}/auth/local/register`;
+            let url = `${api_endpoint}/api/auth/register`;
             let body = {
-                username: username,
                 email: email,
-                password: password,
                 firstname: firstname,
                 lastname: lastname,
+                password: password,
                 address: address,
-                money: money,
-                allPoint: allPoint,
             };
             let res = await Axios.post(url, body);
+            console.log(res);
             if (res.status === 200) {
                 localStorage.setItem(auth_key, JSON.stringify(res.data));
                 return {
@@ -80,18 +79,14 @@ export default {
                     jwt: res.data.jwt,
                 };
             } else {
-                console.log('NOT 200', res);
+                console.log('Register Fail', res);
             }
         } catch (e) {
-            if (e.response.status === 400) {
-                // console.log(e.response.data.message[0].messages[0].message);
+            if (e.response.status == 400)
                 return {
                     success: false,
-                    message: e.response.data.message[0].messages[0].message,
+                    error: e.response.data,
                 };
-            } else {
-                return;
-            }
         }
     },
 

@@ -133,12 +133,8 @@ export default {
         },
 
         async createNewReward(body) {
-            // console.log('What the fuck');
-            // console.log(body.image);
             await ShopStore.dispatch('uploadImage', body.image);
-            // console.log('test', this.uploadedImage);
             this.uploadedImage = ShopStore.getters.getNewImage;
-            // console.log('test', this.uploadedImage);
             body.image = this.uploadedImage;
 
             //check if Image really uploaded

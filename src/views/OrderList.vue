@@ -77,11 +77,7 @@ export default {
     },
     async created() {
         if (!this.isAdmin()) {
-            this.$swal(
-                'You are not logged in as Admin.',
-                'Please login and go to this page again',
-                'error',
-            );
+            this.$swal('You are not logged.', 'Please login and go to this page again', 'error');
             this.$router.push('/login');
         }
         this.end_point = ShopStore.getters.getEndPoint;
@@ -89,14 +85,6 @@ export default {
         await ShopStore.dispatch('fetchRedeem');
         this.purchaseList = ShopStore.getters.getPurchaseList;
         this.redeemList = ShopStore.getters.getRedeemList;
-        // console.log(this.purchaseList, this.redeemList);
-        // console.log('Product');
-        // console.log(
-        //     this.purchaseList[0].id,
-        //     this.purchaseList[0].user.username,
-        //     this.purchaseList[0].product.name,
-        //     this.purchaseList[0].user.address,
-        // );
     },
     methods: {
         async purchaseShipped(id) {

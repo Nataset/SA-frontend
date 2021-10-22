@@ -16,18 +16,9 @@
                 </div>
                 <div class="col align-self-center text-end">
                     <label class="me-5" v-if="isAuthen()">
-                        Username:
-                        {{ currentUser ? currentUser.user.username : 'Fail to Load' }}
+                        Email:
+                        {{ currentUser ? currentUser.user.email : 'Fail to Load' }}
                     </label>
-                    <label class="me-2 text-danger" v-if="isAuthen() && !isAdmin()">
-                        Money:
-                        {{ currentUser ? currentUser.user.money.toFixed(2) : 'Fail to Load' }}
-                    </label>
-
-                    <label class="me-5 text-danger" v-if="isAuthen() && !isAdmin()"
-                        >Point:
-                        {{ currentUser ? currentUser.user.allPoint : 'Fail to Load' }}</label
-                    >
                     <router-link to="/login" class="me-4" v-if="!isAuthen()"
                         ><button
                             type="button"
@@ -63,21 +54,10 @@
                 <li class="nav-item active text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/">Home </router-link>
                 </li>
-                <!-- <li class="nav-item text-center mx-5">
-                    <router-link class="nav-link text-uppercase" to="/topup">Topup</router-link>
-                </li> -->
-                <!-- <li class="nav-item text-center mx-5">
-                    <router-link class="nav-link text-uppercase" to="/reward">Reward</router-link>
-                </li> -->
-                <!-- <li class="nav-item text-center mx-5">
-                    <router-link class="nav-link text-uppercase" to="/leaderboard"
-                        >Leader board</router-link
-                    >
-                </li> -->
                 <li class="nav-item text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/profile">Profile</router-link>
                 </li>
-                <li v-if="isAdmin()" class="nav-item text-center mx-5">
+                <li v-if="isAuthen()" class="nav-item text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/orderlist"
                         >Order List</router-link
                     >
@@ -100,7 +80,7 @@ export default {
         };
     },
     created() {
-        this.currentUser = ShopStore.getters.getCurrentUser;
+        this.currentUser = ShopStore.getters.currentUser;
     },
     methods: {
         isAdmin() {
@@ -108,9 +88,6 @@ export default {
         },
         isAuthen() {
             return ShopStore.getters.isAuthen;
-        },
-        setNewCurrentUser() {
-            this.currentUser = ShopStore.getters.getCurrentUser;
         },
     },
     name: 'Navbar',

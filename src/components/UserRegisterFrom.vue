@@ -4,15 +4,16 @@
         <form @submit.prevent="register" class="custom-form">
             <div class="container">
                 <div>
-                    <label>Username : </label>
+                    <label>Email :</label>
                     <input
-                        type="text"
-                        name="username"
-                        v-model="registerForm.username"
+                        type="email"
+                        name="email"
+                        v-model="registerForm.email"
                         autocomplete="off"
-                        placeholder="username"
+                        placeholder="email"
                     />
                 </div>
+                <div style="width: 435px;"></div>
                 <div>
                     <label>Password :</label>
                     <input
@@ -33,16 +34,7 @@
                         placeholder="confirm password"
                     />
                 </div>
-                <div>
-                    <label>Email :</label>
-                    <input
-                        type="email"
-                        name="email"
-                        v-model="registerForm.email"
-                        autocomplete="off"
-                        placeholder="email"
-                    />
-                </div>
+
                 <div>
                     <label>Firstname :</label>
                     <input
@@ -86,53 +78,51 @@ import ShopStore from '@/store/Shop';
 export default {
     data() {
         return {
-            allUser: [],
             currentUser: '',
-            edit: false,
             confirm_password: '',
             registerForm: {
-                username: '',
-                password: '',
                 email: '',
-                address: '',
                 firstname: '',
                 lastname: '',
-                money: 0,
-                allPoint: 0,
+                password: '',
+                address: '',
             },
         };
     },
     methods: {
         async register() {
-            if (this.checkNull()) {
-                if (this.registerForm.password === this.confirm_password) {
-                    let res = await ShopStore.dispatch('register', this.registerForm);
-                    if (res.success) {
-                        this.$swal('Register Success', `Welcome ${res.user.username}`, 'success');
-                        this.$router.push('/');
-                    } else {
-                        this.$swal('Register Failed', res.message, 'error');
-                    }
+            // if (this.checkNull()) {
+            if (this.registerForm.password === this.confirm_password) {
+                let res = await ShopStore.dispatch('register', this.registerForm);
+                if (res.success) {
+                    this.$swal('Register Success', `Welcome ${res.user.email}`, 'success');
+                    this.$router.push('/');
                 } else {
-                    this.$swal(
-                        'Register Failed',
-                        'Your password and confirm password is not match!',
-                        'error',
-                    );
+                    let errorMsg = '';
+                    for (const key in res.error) {
+                        res.error[key].forEach(msg => (errorMsg += `${msg}\n`));
+                    }
+                    this.$swal('Register Failed', errorMsg, 'error');
                 }
             } else {
                 this.$swal(
                     'Register Failed',
-                    'Please check that the information you have entered is complete.',
+                    'Your password and confirm password is not match!',
                     'error',
                 );
             }
+            // } else {
+            //     this.$swal(
+            //         'Register Failed',
+            //         'Please check that the information you have entered is complete.',
+            //         'error',
+            //     );
+            // }
         },
         checkNull() {
             return (
-                this.registerForm.username !== '' &&
-                this.registerForm.password !== '' &&
                 this.registerForm.email !== '' &&
+                this.registerForm.password !== '' &&
                 this.registerForm.address !== '' &&
                 this.registerForm.firstname !== '' &&
                 this.registerForm.lastname !== ''
@@ -168,7 +158,7 @@ export default {
         display: flex;
         flex-direction: column;
         margin: 0.4em auto;
-        
+
         input {
             width: 100%;
         }
