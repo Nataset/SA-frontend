@@ -1,15 +1,17 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
-import UserProfile from '@/views/UserProfile.vue';
-import Login from '@/views/Login.vue';
-import Register from '@/views/Register.vue';
-import Logout from '@/views/Logout.vue';
-import OrderList from '../views/OrderList.vue';
-import Stock from "../views/Stock.vue";
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
+import UserProfile from "@/views/UserProfile.vue";
+import Login from "@/views/Login.vue";
+import Register from "@/views/Register.vue";
+import Logout from "@/views/Logout.vue";
+import OrderList from "../views/OrderList.vue";
+
 import Restock from "../views/Restock.vue";
 import Supplier from "../views/Supplier.vue";
 import AddSupplier from "../views/AddSupplier.vue";
+import AddItem from "../views/AddItem.vue";
+import EditItem from "../views/EditItem.vue";
 
 Vue.use(VueRouter);
 
@@ -44,11 +46,7 @@ const routes = [
     name: "OrderList",
     component: OrderList,
   },
-  {
-    path: "/stock",
-    name: "Stock",
-    component: Stock,
-  },
+
   {
     path: "/restock",
     name: "Restock",
@@ -64,12 +62,22 @@ const routes = [
     name: "AddSupplier",
     component: AddSupplier,
   },
+  {
+    path: "/item/add",
+    name: "AddItem",
+    component: AddItem,
+  },
+  {
+    path: "/item/edit/:id",
+    name: "EditItem",
+    component: EditItem,
+  },
 ];
 
 const router = new VueRouter({
-    mode: 'history',
-    base: process.env.BASE_URL,
-    routes,
+  mode: "history",
+  base: process.env.BASE_URL,
+  routes,
 });
 
 export default router;
