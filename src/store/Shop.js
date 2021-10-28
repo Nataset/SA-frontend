@@ -20,10 +20,12 @@ export default new Vuex.Store({
         currentUser: initialStateUser,
         endPoint: end_point,
         items: [],
+        editItem: {},
     },
     getters: {
         currentUser: state => state.currentUser,
         items: state => state.items,
+        editItem: state => state.editItem,
         endPoint: state => state.endPoint,
         isAuthen: state => state.currentUser.isAuthen,
         isAdmin: state => state.currentUser.user.role == 'admin',
@@ -43,6 +45,9 @@ export default new Vuex.Store({
 
         setItems(state, res) {
             state.items = res;
+        },
+        getItemById(state, res) {
+            state.editItem = res;
         },
     },
     actions: {
@@ -76,6 +81,17 @@ export default new Vuex.Store({
                 console.error('Fetch Items error');
                 console.error(error);
             }
+        },
+        async addItem({ commit }, payload) {
+            let url = `${end_point}/api/items/add`;
+            let body = payload;
+
+            let res = await axios.post(url, body);
+        },
+        async getItemById({ commit }, id) {
+            let url = `${end_point}/api/items/${id}`;
+            let res = await axios.get(url);
+            commit('getItemById', res.data);
         },
     },
     modules: {},

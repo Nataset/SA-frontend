@@ -1,13 +1,13 @@
 <template>
     <div>
-        <login-from class="center mb-5"></login-from>
+        <login-form class="center mb-5"></login-form>
     </div>
 </template>
 
 <script>
-import LoginFrom from '@/components/LoginFrom.vue';
+import LoginForm from '@/components/LoginForm.vue';
 export default {
-    components: { LoginFrom },
+    components: { LoginForm },
 };
 </script>
 

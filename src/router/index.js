@@ -7,6 +7,11 @@ import Register from '@/views/Register.vue';
 import Logout from '@/views/Logout.vue';
 import OrderList from '../views/OrderList.vue';
 import Cart from '../views/Cart.vue';
+import Restock from '../views/Restock.vue';
+import Supplier from '../views/Supplier.vue';
+import AddSupplier from '../views/AddSupplier.vue';
+import AddItem from '../views/AddItem.vue';
+import EditItem from '../views/EditItem.vue';
 
 Vue.use(VueRouter);
 
@@ -40,6 +45,32 @@ const routes = [
         path: '/orderlist',
         name: 'OrderList',
         component: OrderList,
+    },
+
+    {
+        path: '/restock',
+        name: 'Restock',
+        component: Restock,
+    },
+    {
+        path: '/supplier',
+        name: 'Supplier',
+        component: Supplier,
+    },
+    {
+        path: '/supplier/add',
+        name: 'AddSupplier',
+        component: AddSupplier,
+    },
+    {
+        path: '/item/add',
+        name: 'AddItem',
+        component: AddItem,
+    },
+    {
+        path: '/item/edit/:id',
+        name: 'EditItem',
+        component: EditItem,
     },
     {
         path: '/cart',

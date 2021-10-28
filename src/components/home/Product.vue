@@ -43,6 +43,10 @@ export default {
             return ShopStore.getters.isAuthen;
         },
 
+        addItemToCart() {
+            userCart.commit('addItemInCart', this.item);
+            this.$swal(`เพิ่มสินค้าสำเร็จ`, `เพิ่ม ${this.title} 1 จำนวนลงใน Cart`, 'success');
+        },
         isAdmin() {
             return ShopStore.getters.isAuthen ? ShopStore.getters.isAdmin : false;
         },
@@ -68,10 +72,17 @@ export default {
         fetchCurrentUserdata() {
             this.currentUser = ShopStore.getters.getCurrentUser;
         },
-
-        addItemToCart() {
-            userCart.commit('addItemInCart', this.item);
-            this.$swal(`เพิ่มสินค้าสำเร็จ`, `เพิ่ม ${this.title} 1 จำนวนลงใน Cart`, 'success');
+        isItemPicNull() {
+            return this.item.image_path === null;
+        },
+        buyItem() {
+            console.log('THIS IS FROM BUY ITEM FUNCTION');
+        },
+        edit(item) {
+            this.$router.push({
+                name: 'EditItem',
+                params: { id: item.id },
+            });
         },
     },
 };
@@ -95,6 +106,12 @@ export default {
     text-align: center;
     padding-top: 10px;
     font-family: 'Questrial', sans-serif;
+    cursor: pointer;
+}
+#flex-content:hover {
+    transform: scale(1.05);
+    transition: 0.25s;
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.6);
 }
 
 #flex-content::before {

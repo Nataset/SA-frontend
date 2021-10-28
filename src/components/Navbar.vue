@@ -1,11 +1,5 @@
 <template>
     <div class="container" id="navbar">
-        <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/login">Login</router-link> |
-      <router-link to="/profile">Profile</router-link>
-    </div> -->
         <div class="container my-3">
             <div class="row">
                 <div class="col display-4 align-self-center">
@@ -64,17 +58,42 @@
                 </div>
             </div>
         </div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" v-if="!isAdmin()">
             <ul class="navbar-nav mx-auto" style="font-family: Fira Sans; font-weight: 600">
-                <li class="nav-item active text-center mx-5">
-                    <router-link class="nav-link text-uppercase" to="/">Home </router-link>
+                <li class="nav-item text-center mx-5">
+                    <router-link class="nav-link text-uppercase" to="/">Home</router-link>
                 </li>
+
                 <li class="nav-item text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/profile">Profile</router-link>
                 </li>
+
                 <li v-if="isAuthen()" class="nav-item text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/orderlist"
                         >Order List</router-link
+                    >
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" v-if="isAdmin()">
+            <ul class="navbar-nav mx-auto" style="font-family: Fira Sans; font-weight: 600">
+                <li class="nav-item text-center mx-5">
+                    <router-link class="nav-link text-uppercase" to="/">Stock</router-link>
+                </li>
+
+                <li class="nav-item text-center mx-5">
+                    <router-link class="nav-link text-uppercase" to="/supplier"
+                        >Supplier
+                    </router-link>
+                </li>
+                <li class="nav-item text-center mx-5">
+                    <router-link class="nav-link text-uppercase" to="/orderlist"
+                        >Restock Order List</router-link
+                    >
+                </li>
+                <li class="nav-item text-center mx-5">
+                    <router-link class="nav-link text-uppercase" to="/orderlist"
+                        >Customer Order List</router-link
                     >
                 </li>
             </ul>
@@ -98,6 +117,7 @@ export default {
     created() {
         this.currentUser = ShopStore.getters.currentUser;
     },
+
     methods: {
         isAdmin() {
             return ShopStore.getters.isAuthen ? ShopStore.getters.isAdmin : false;
