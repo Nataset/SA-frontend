@@ -133,12 +133,10 @@ export default {
         this.fetchAllData();
         this.setProduct();
         this.setReward();
-        // console.log(this.allReward);
     },
     methods: {
         async fetchAllData() {
             this.currentUser = JSON.parse(JSON.stringify(ShopStore.getters.getCurrentUser));
-            console.log(this.currentUser);
             this.allProduct = ShopStore.getters.getProductList;
             this.allReward = ShopStore.getters.getRewardList;
         },
@@ -335,4 +333,5 @@ export default {
 ::-webkit-scrollbar-thumb {
     background: hsl(182, 70%, 65%);
     border-radius: 30px;
-}</style>>
+}</style
+>>

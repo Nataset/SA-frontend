@@ -33,6 +33,7 @@ export default new Vuex.Store({
         },
         removeItemInCart(state, item_id) {
             state.itemInCart = state.itemInCart.filter(item => item.id != item_id);
+            state.itemTypeAmount--;
         },
 
         addItemAmount(state, item_id) {
@@ -41,7 +42,6 @@ export default new Vuex.Store({
                     item.buyAmount++;
                 }
             });
-            console.log(state.itemInCart);
         },
 
         reduceItemAmount(state, item_id) {

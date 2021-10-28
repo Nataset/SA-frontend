@@ -125,7 +125,6 @@ export default {
             // read the image file as a data URL.
             reader.readAsDataURL(file);
             this.addRewardForm.image = file;
-            console.log(file);
         },
 
         setImage(event) {

@@ -26,7 +26,6 @@ export default {
     },
     async created() {
         await this.fetchItemsData();
-        console.log(this.items);
     },
     methods: {
         async fetchItemsData() {

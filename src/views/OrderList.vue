@@ -117,7 +117,6 @@ export default {
                 this.redeemList = this.redeemList.map(item => {
                     if (item.id === id) {
                         item.shipped = true;
-                        console.log(item);
                     }
                     return item;
                 });
