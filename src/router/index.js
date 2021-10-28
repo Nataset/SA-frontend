@@ -6,6 +6,7 @@ import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import Logout from '@/views/Logout.vue';
 import OrderList from '../views/OrderList.vue';
+import Cart from '../views/Cart.vue';
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes = [
         path: '/orderlist',
         name: 'OrderList',
         component: OrderList,
+    },
+    {
+        path: '/cart',
+        name: 'Cart',
+        component: Cart,
     },
 ];
 

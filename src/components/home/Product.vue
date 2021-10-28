@@ -5,8 +5,13 @@
         <h5 class="mt-1">Amount: {{ amount }}</h5>
         <h5 class="mt-1">Price: {{ price.toFixed(2) }} Baht</h5>
         <div class="d-grid gap-2 col-8 mx-auto">
-            <button type="button" class="btn btn-danger mb-4" @click="buyItem" v-if="!isAdmin()">
-                BUY NOW!!
+            <button
+                type="button"
+                class="btn btn-danger mb-4"
+                @click="addItemToCart"
+                v-if="!isAdmin()"
+            >
+                Add to Cart
             </button>
         </div>
     </div>
@@ -14,6 +19,7 @@
 
 <script>
 import ShopStore from '@/store/Shop';
+import userCart from '@/store/Cart';
 
 export default {
     name: 'Item',
@@ -63,8 +69,9 @@ export default {
             this.currentUser = ShopStore.getters.getCurrentUser;
         },
 
-        buyItem() {
-            console.log('THIS IS FROM BUY ITEM FUNCTION');
+        addItemToCart() {
+            userCart.commit('addItemInCart', this.item);
+            this.$swal(`เพิ่มสินค้าสำเร็จ`, `เพิ่ม ${this.title} 1 จำนวนลงใน Cart`, 'success');
         },
     },
 };

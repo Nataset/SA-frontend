@@ -2,8 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import AuthService from '@/services/AuthService';
-import PurchaseProduct from '../services/PurchaseProduct';
-import EditReward from '../services/EditReward.js';
 
 const end_point = process.env.SHOP_VUE_APP_SHOP_ENDPOINT || 'http://localhost:8000';
 

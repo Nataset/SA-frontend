@@ -28,6 +28,21 @@
                             LOGIN
                         </button>
                     </router-link>
+                    <router-link to="/cart">
+                        <button
+                            id="cart"
+                            type="button"
+                            v-if="isAuthen()"
+                            class="btn btn btn-warning px-3 me-3 position-relative"
+                            style="font-family: Raleway"
+                        >
+                            <span
+                                v-if="ItemAmountInCart()"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                >{{ ItemAmountInCart() }}
+                            </span>
+                        </button>
+                    </router-link>
                     <router-link to="/logout" class="me-4" v-if="isAuthen()"
                         ><button
                             type="button"
@@ -72,6 +87,7 @@ import 'bootstrap/scss/bootstrap.scss';
 import '@popperjs/core';
 import 'bootstrap';
 import ShopStore from '@/store/Shop';
+import userCart from '@/store/Cart';
 
 export default {
     data() {
@@ -89,6 +105,9 @@ export default {
         isAuthen() {
             return ShopStore.getters.isAuthen;
         },
+        ItemAmountInCart() {
+            return userCart.getters.itemTypeAmount;
+        },
     },
     name: 'Navbar',
 };
@@ -97,4 +116,13 @@ export default {
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap');
+
+#cart {
+    background-image: url('./../../public/cart.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 33px 30px;
+    height: 40px;
+    width: 50px;
+}
 </style>
