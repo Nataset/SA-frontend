@@ -5,26 +5,30 @@
       <div
         class="container border border-danger bg-danger p-3"
         id="flex"
-        v-if="isAdmin()"
+        v-if="isAdmin() && min_items.length != 0"
       >
         <div class="fs-1 text-white w-100">Need to Restock</div>
-        <br />
+
         <product
           v-for="(item, index) in min_items"
           v-bind:key="index"
           :item="item"
         ></product>
       </div>
+
       <div class="container" id="flex" v-if="isAdmin()">
-        <div class="mb-4" id="flex-content">
+        <div id="add">
           <router-link to="/item/add"
-            ><img
-              src="../../public/plus.png"
-              alt="plus"
-              class="mt-4"
-              width="280"
-              height="320"
-          /></router-link>
+            ><button class="w-100 h-100 btn btn-outline-dark" id="add-button">
+              <svg
+                width="100"
+                height="500"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z" />
+              </svg></button
+          ></router-link>
         </div>
         <product
           v-for="(item, index) in cut_items"
@@ -32,7 +36,8 @@
           :item="item"
         ></product>
       </div>
-      <div class="container" id="flex">
+
+      <div class="container" id="flex" v-if="!isAdmin()">
         <product
           v-for="(item, index) in items"
           v-bind:key="index"
@@ -136,5 +141,13 @@ export default {
   opacity: 0.9;
   z-index: -1;
   background-color: white;
+}
+
+#add-button:hover {
+  background-color: white;
+}
+
+#add {
+  width: 29%;
 }
 </style>
