@@ -13,6 +13,7 @@ import AddItem from '../views/AddItem.vue';
 import EditItem from '../views/EditItem.vue';
 import Howtopay from '../views/Howtopay.vue';
 import OrderDetail from '../views/OrderDetail.vue';
+import OrderReceipt from '../views/OrderReceipt';
 
 Vue.use(VueRouter);
 
@@ -82,6 +83,11 @@ const routes = [
         path: '/orderlist/order/:id',
         name: 'OrderDetail',
         component: OrderDetail,
+    },
+    {
+        path: '/orderlist/order/:id/receipt',
+        name: 'OrderReceipt',
+        component: OrderReceipt,
     },
 ];
 

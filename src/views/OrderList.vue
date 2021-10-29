@@ -22,6 +22,9 @@
                         <button @click="infoHandler(order.id)" class="btn btn-primary">
                             เพิ่มเติม
                         </button>
+                        <button @click="receiptHandler(order.id)" class="btn btn-warning ms-1">
+                            ยืนยันการโอนเงิน
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -70,6 +73,10 @@ export default {
 
         infoHandler(order_id) {
             this.$router.push('/orderlist/order/' + order_id);
+        },
+
+        receiptHandler(order_id) {
+            this.$router.push('/orderlist/order/' + order_id + '/receipt');
         },
     },
 };
