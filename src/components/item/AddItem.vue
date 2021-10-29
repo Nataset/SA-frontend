@@ -33,6 +33,10 @@
           v-model="form.min_item"
         />
       </div>
+      <div>
+        Select supplier :
+        <select id="supplierList"></select>
+      </div>
       <div><button>Upload Image</button></div>
       <div><button @click="addItem">Add</button></div>
       <div>
@@ -44,6 +48,7 @@
 
 <script>
 import ShopStore from "@/store/Shop";
+import SupplierStore from "../../store/supplier";
 export default {
   data() {
     return {
@@ -53,7 +58,11 @@ export default {
         price: "",
         min_item: "",
       },
+      suppliers: [],
     };
+  },
+  async created() {
+    await this.fetchSuppliers();
   },
   methods: {
     async addItem() {
@@ -75,6 +84,10 @@ export default {
       } else {
         this.$swal("Add Failed", "Please complete your form", "error");
       }
+    },
+    async fetchSuppliers() {
+      await SupplierStore.dispatch("fetchSuppliers");
+      this.suppliers = SupplierStore.getters.suppliers;
     },
   },
 };

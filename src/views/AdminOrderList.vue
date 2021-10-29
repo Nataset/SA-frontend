@@ -3,7 +3,9 @@
     <table class="table container mt-5 table-secondary text-center">
       <thead class="table-dark">
         <tr>
-          <th class="col-1" scope="col">Order No</th>
+          <th class="col-1" scope="col">Order Id</th>
+          <th class="col-2" scope="col ">ชื่อลูกค้า</th>
+          <th class="col-2" scope="col "></th>
           <th class="col-1" scope="col">ประเภทสินค้า</th>
           <th class="col-2" scope="col ">ราคาของสินค้าทั้งหมด</th>
           <th class="col-2 text-start" scope="col">วันที่สร้างคำสั้งซื้อ</th>
@@ -13,7 +15,16 @@
       </thead>
       <tbody>
         <tr v-for="(order, index) in orderList" :key="index">
-          <td>{{ index + 1 }}</td>
+          <td>{{ order.id }}</td>
+          <td>{{ order.user.firstname + " " + order.user.lastname }}</td>
+          <td>
+            <button
+              @click="userInfoHandler(order.user.id)"
+              class="btn btn-primary"
+            >
+              ข้อมูลลูกค้า
+            </button>
+          </td>
           <td>{{ order.items.length }}</td>
           <td>{{ order.total_order_price }} บาท</td>
           <td class="text-start">{{ dateFormat(order.created_at) }}</td>
@@ -32,7 +43,7 @@
 import axios from "axios";
 import ShopStore from "@/store/Shop";
 export default {
-  name: "orderList",
+  name: "AdminOrderList",
   data() {
     return {
       endpoint: ShopStore.getters.endPoint,
@@ -41,9 +52,9 @@ export default {
     };
   },
   async created() {
-    if (!this.isAuthen()) {
+    if (!this.isAdmin()) {
       this.$swal(
-        "You are not logged.",
+        "You are not admin.",
         "Please login and go to this page again",
         "error"
       );
@@ -52,20 +63,16 @@ export default {
     await this.fetchOrderData("all");
   },
   methods: {
-    isAuthen() {
-      return ShopStore.getters.isAuthen && !ShopStore.getters.isAdmin;
+    isAdmin() {
+      return ShopStore.getters.isAuthen ? ShopStore.getters.isAdmin : false;
     },
+
     async fetchOrderData(status) {
-      let user_id = ShopStore.getters.currentUser.user.id;
-      let url = `${this.endpoint}/api/user/orders/${user_id}`;
+      let url = `${this.endpoint}/api/orders/all`;
       try {
         let res = await axios.post(url, { status: status });
         this.orderList = res.data;
-        console.log(res.data);
-      } catch (err) {
-        console.log("error at fetchOrderData");
-        console.error(err);
-      }
+      } catch (err) {}
     },
     dateFormat(date) {
       const d = new Date(date);
@@ -74,6 +81,9 @@ export default {
 
     infoHandler(order_id) {
       this.$router.push("/orderlist/order/" + order_id);
+    },
+    userInfoHandler(user_id) {
+      this.$router.push("/user/" + user_id);
     },
   },
 };
