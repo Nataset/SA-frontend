@@ -128,10 +128,11 @@ export default {
                 total_order_price: this.getTotalPrice(),
                 item: this.itemInCart,
             };
-
-            console.log(payload);
-
-            await UserCart.dispatch('checkout', payload);
+            let res = await UserCart.dispatch('checkout', payload);
+            UserCart.commit('resetItemInCart');
+            this.$swal('ทำการเช็คเอาท์สำเร็จ', 'กรุณาทำเรื่องชำระเงินต่อไป', 'success').then(() => {
+                this.$router.push('/');
+            });
         },
     },
 };

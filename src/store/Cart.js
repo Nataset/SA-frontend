@@ -53,12 +53,17 @@ export default new Vuex.Store({
                 }
             });
         },
+
+        resetItemInCart(state) {
+            state.itemInCart = [];
+            state.itemTypeAmount = 0;
+        },
     },
     actions: {
         async checkout({ commit }, payload) {
             let url = `${end_point}/api/user/orders/add`;
             let res = await axios.post(url, payload);
-            console.log(res);
+            return res;
         },
     },
     modules: {},
