@@ -1,43 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div class="mb-4 bg-white" id="flex-content">
-    <img
-      src="../../../public/box.png"
-      class="mt-4"
-      width="250"
-      height="250"
-      v-if="isItemPicNull()"
-    />
-    <img
-      v-bind:src="picURL"
-      class="mt-4"
-      width="250"
-      height="250"
-      v-if="!isItemPicNull()"
-    />
-    <h4 class="mt-3">{{ title }}</h4>
-    <h5 class="mt-1">Amount: {{ amount }}</h5>
-    <h5 class="mt-1">Price: {{ price.toFixed(2) }} Baht</h5>
-    <div class="d-grid gap-2 col-8 mx-auto">
-      <button type="button" class="btn btn-danger mb-2" v-if="isAdmin()">
-        Restock
-      </button>
-      <button
-        type="button"
-        class="btn btn-danger mb-4"
-        v-if="isAdmin()"
-        @click="edit(item)"
-      >
-        Edit</button
-      ><button
-        type="button"
-        class="btn btn-danger mb-4"
-        @click="addItemToCart"
-        v-if="!isAdmin()"
-      >
-        Add to Cart
-      </button>
-=======
     <div class="mb-4" id="flex-content">
         <img :src="picURL" class="mt-4" width="250" height="250" />
         <h4 class="mt-3">{{ title }}</h4>
@@ -58,7 +19,6 @@
                 Add to Cart
             </button>
         </div>
->>>>>>> 28eea7c316312442413744bad3aa9d550f5cd306
     </div>
 </template>
 
