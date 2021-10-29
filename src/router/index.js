@@ -14,6 +14,7 @@ import Howtopay from "../views/Howtopay.vue";
 import OrderDetail from "../views/OrderDetail.vue";
 import AdminOrderList from "../views/AdminOrderList.vue";
 import UserDetail from "../views/UserDetail.vue";
+import OrderReceipt from "../views/OrderReceipt";
 
 Vue.use(VueRouter);
 
@@ -88,6 +89,11 @@ const routes = [
     path: "/user/:id",
     name: "UserDetail",
     component: UserDetail,
+  },
+  {
+    path: "/orderlist/order/:id/receipt",
+    name: "OrderReceipt",
+    component: OrderReceipt,
   },
 ];
 

@@ -3,7 +3,7 @@
     <table class="table container mt-5 table-secondary text-center">
       <thead class="table-dark">
         <tr>
-          <th class="col-1" scope="col">Order No</th>
+          <th class="col-1" scope="col">Order ID</th>
           <th class="col-1" scope="col">ประเภทสินค้า</th>
           <th class="col-2" scope="col ">ราคาของสินค้าทั้งหมด</th>
           <th class="col-2 text-start" scope="col">วันที่สร้างคำสั้งซื้อ</th>
@@ -12,8 +12,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(order, index) in orderList" :key="index">
-          <td>{{ index + 1 }}</td>
+        <tr v-for="order in orderList" v-bind:key="order.id">
+          <td>{{ order.id }}</td>
           <td>{{ order.items.length }}</td>
           <td>{{ order.total_order_price }} บาท</td>
           <td class="text-start">{{ dateFormat(order.created_at) }}</td>
@@ -21,6 +21,12 @@
           <td>
             <button @click="infoHandler(order.id)" class="btn btn-primary">
               เพิ่มเติม
+            </button>
+            <button
+              @click="receiptHandler(order.id)"
+              class="btn btn-warning ms-1"
+            >
+              ยืนยันการโอนเงิน
             </button>
           </td>
         </tr>
@@ -74,6 +80,10 @@ export default {
 
     infoHandler(order_id) {
       this.$router.push("/orderlist/order/" + order_id);
+    },
+
+    receiptHandler(order_id) {
+      this.$router.push("/orderlist/order/" + order_id + "/receipt");
     },
   },
 };

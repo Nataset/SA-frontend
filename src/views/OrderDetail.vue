@@ -110,7 +110,6 @@ export default {
       let url = this.endPoint + "/api/orders/" + this.order_id;
       let res = await axios(url);
       this.order = res.data;
-      console.dir(this.order);
     },
   },
 };
