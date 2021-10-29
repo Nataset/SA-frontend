@@ -84,7 +84,7 @@ export default {
     data() {
         return {
             itemInCart: [],
-            placeholder: 'https://via.placeholder.com/200x200',
+            placeholder: require('@/assets/box.png'),
         };
     },
     mounted() {
@@ -131,11 +131,16 @@ export default {
             let res = await UserCart.dispatch('checkout', payload);
             UserCart.commit('resetItemInCart');
             this.$swal('ทำการเช็คเอาท์สำเร็จ', 'กรุณาทำเรื่องชำระเงินต่อไป', 'success').then(() => {
-                this.$router.push('/');
+                this.$router.push('/howtopay');
             });
         },
     },
 };
 </script>
 
-<style></style>
+<style scoped>
+img {
+    width: 200px;
+    height: 200px;
+}
+</style>
