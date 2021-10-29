@@ -2,9 +2,21 @@
   <div>
     <div class="container-fluid text-center">
       <jumbotron></jumbotron>
-
-      <div class="container" id="flex">
-        <div class="mb-4" id="flex-content" v-if="isAdmin()">
+      <div
+        class="container border border-danger bg-danger p-3"
+        id="flex"
+        v-if="isAdmin()"
+      >
+        <div class="fs-1 text-white w-100">Need to Restock</div>
+        <br />
+        <product
+          v-for="(item, index) in min_items"
+          v-bind:key="index"
+          :item="item"
+        ></product>
+      </div>
+      <div class="container" id="flex" v-if="isAdmin()">
+        <div class="mb-4" id="flex-content">
           <router-link to="/item/add"
             ><img
               src="../../public/plus.png"
@@ -14,6 +26,13 @@
               height="320"
           /></router-link>
         </div>
+        <product
+          v-for="(item, index) in cut_items"
+          v-bind:key="index"
+          :item="item"
+        ></product>
+      </div>
+      <div class="container" id="flex">
         <product
           v-for="(item, index) in items"
           v-bind:key="index"
@@ -36,10 +55,15 @@ export default {
     return {
       currentUser: [],
       items: [],
+      cut_items: [],
+      min_items: [],
     };
   },
   async created() {
     await this.fetchItemsData();
+    if (this.isAdmin()) {
+      this.fetchMinItems();
+    }
   },
   methods: {
     async fetchItemsData() {
@@ -61,6 +85,20 @@ export default {
 
     isAuthen() {
       return ShopStore.getters.isAuthen;
+    },
+    async fetchMinItems() {
+      for (let i = 0; i < this.items.length; i++) {
+        if (this.items[i].amount < this.items[i].min_item) {
+          this.min_items.push(this.items[i]);
+        }
+      }
+      for (let i = 0; i < this.items.length; i++) {
+        if (this.items[i].amount < this.items[i].min_item) {
+          this.items.splice(i, 1);
+          i--;
+        }
+      }
+      this.cut_items = this.items;
     },
   },
 };

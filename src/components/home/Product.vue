@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4" id="flex-content">
+  <div class="mb-4 bg-white" id="flex-content">
     <img
       src="../../../public/box.png"
       class="mt-4"
