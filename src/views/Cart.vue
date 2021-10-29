@@ -25,7 +25,7 @@
                                         <label class="text-muted ms-3"
                                             >{{ item.price.toFixed(2) }}
                                         </label>
-                                        <label class="text-muted ms-2"> Baht</label>
+                                        <label class="text-muted ms-2"> บาท</label>
                                     </h5>
                                     <h5 class="card-text d-inline d-flex align-items-center">
                                         จำนวนสินค้า :

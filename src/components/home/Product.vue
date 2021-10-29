@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-4" id="flex-content">
+    <div class="mb-4" id="flex-content" @click="edit(item)">
         <img v-bind:src="picURL" class="mt-4" width="250" height="250" />
         <h4 class="mt-3">{{ title }}</h4>
         <h5 class="mt-1">Amount: {{ amount }}</h5>
@@ -48,7 +48,7 @@ export default {
             this.$swal(`เพิ่มสินค้าสำเร็จ`, `เพิ่ม ${this.title} 1 จำนวนลงใน Cart`, 'success');
         },
         isAdmin() {
-            return ShopStore.getters.isAuthen ? ShopStore.getters.isAdmin : false;
+            return ShopStore.getters.isAdmin;
         },
         // Check If image exists
         checkImage(url) {
@@ -79,10 +79,12 @@ export default {
             console.log('THIS IS FROM BUY ITEM FUNCTION');
         },
         edit(item) {
-            this.$router.push({
-                name: 'EditItem',
-                params: { id: item.id },
-            });
+            if (this.isAdmin()) {
+                this.$router.push({
+                    name: 'EditItem',
+                    params: { id: item.id },
+                });
+            }
         },
     },
 };

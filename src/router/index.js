@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
-import UserProfile from '@/views/UserProfile.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import Logout from '@/views/Logout.vue';
@@ -12,6 +11,8 @@ import Supplier from '../views/Supplier.vue';
 import AddSupplier from '../views/AddSupplier.vue';
 import AddItem from '../views/AddItem.vue';
 import EditItem from '../views/EditItem.vue';
+import Howtopay from '../views/Howtopay.vue';
+import OrderDetail from '../views/OrderDetail.vue';
 
 Vue.use(VueRouter);
 
@@ -20,11 +21,6 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home,
-    },
-    {
-        path: '/profile',
-        name: 'UserProfile',
-        component: UserProfile,
     },
     {
         path: '/login',
@@ -76,6 +72,16 @@ const routes = [
         path: '/cart',
         name: 'Cart',
         component: Cart,
+    },
+    {
+        path: '/howtopay',
+        name: 'Howtopay',
+        component: Howtopay,
+    },
+    {
+        path: '/orderlist/order/:id',
+        name: 'OrderDetail',
+        component: OrderDetail,
     },
 ];
 
