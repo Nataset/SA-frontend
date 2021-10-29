@@ -40,6 +40,7 @@
         ></product>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -85,6 +86,7 @@ export default {
     isAuthen() {
       return ShopStore.getters.isAuthen;
     },
+
     async fetchMinItems() {
       for (let i = 0; i < this.items.length; i++) {
         if (this.items[i].amount < this.items[i].min_item) {
