@@ -56,50 +56,49 @@ export default {
       return ShopStore.getters.isAuthen;
     },
 
-    addItemToCart() {
-      userCart.commit("addItemInCart", this.item);
-      this.$swal(
-        `เพิ่มสินค้าสำเร็จ`,
-        `เพิ่ม ${this.title} 1 จำนวนลงใน Cart`,
-        "success"
-      );
-    },
-    isAdmin() {
-      return ShopStore.getters.isAuthen ? ShopStore.getters.isAdmin : false;
-    },
-    // Check If image exists
-    checkImage(url) {
-      return axios.get(url).then((result) => {
-        url = this.endPoint + url;
-        return result.status == 200 ? true : false;
-      });
-    },
-    async getValidImageUrl(url) {
-      return (await this.checkImage(url)) ? url : this.placeholder;
-    },
-    async validProductData() {
-      this.title = this.item.name || "Item TITLE";
-      this.price = this.item.price ? this.item.price : "Item PRICE";
-      this.amount = this.item.amount ? this.item.amount : "Item AMOUNT";
-      this.picURL = this.item.image_path
-        ? // edit url to product image
-          await this.getValidImageUrl(this.product.photo.formats.small.url)
-        : this.placeholder;
-    },
-    fetchCurrentUserdata() {
-      this.currentUser = ShopStore.getters.getCurrentUser;
-    },
-    isItemPicNull() {
-      return this.item.image_path === null;
-    },
-    buyItem() {
-      console.log("THIS IS FROM BUY ITEM FUNCTION");
-    },
-    edit(item) {
-      this.$router.push({
-        name: "EditItem",
-        params: { id: item.id },
-      });
+        addItemToCart() {
+            userCart.commit('addItemInCart', this.item);
+            this.$swal(`เพิ่มสินค้าสำเร็จ`, `เพิ่ม ${this.title} 1 จำนวนลงใน Cart`, 'success');
+        },
+        isAdmin() {
+            return ShopStore.getters.isAdmin;
+        },
+        // Check If image exists
+        checkImage(url) {
+            return axios.get(url).then(result => {
+                url = this.endPoint + url;
+                return result.status == 200 ? true : false;
+            });
+        },
+        async getValidImageUrl(url) {
+            return (await this.checkImage(url)) ? url : this.placeholder;
+        },
+        async validProductData() {
+            this.title = this.item.name || 'Item TITLE';
+            this.price = this.item.price ? this.item.price : 'Item PRICE';
+            this.amount = this.item.amount ? this.item.amount : 'Item AMOUNT';
+            this.picURL = this.item.image_path
+                ? // edit url to product image
+                  await this.getValidImageUrl(this.product.photo.formats.small.url)
+                : this.placeholder;
+        },
+        fetchCurrentUserdata() {
+            this.currentUser = ShopStore.getters.getCurrentUser;
+        },
+        isItemPicNull() {
+            return this.item.image_path === null;
+        },
+        buyItem() {
+            console.log('THIS IS FROM BUY ITEM FUNCTION');
+        },
+        edit(item) {
+            if (this.isAdmin()) {
+                this.$router.push({
+                    name: 'EditItem',
+                    params: { id: item.id },
+                });
+            }
+        },
     },
   },
 };

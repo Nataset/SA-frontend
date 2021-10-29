@@ -63,10 +63,15 @@
                 <li class="nav-item text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/">Home</router-link>
                 </li>
-
                 <li class="nav-item text-center mx-5">
-                    <router-link class="nav-link text-uppercase" to="/profile">Profile</router-link>
+                    <router-link class="nav-link text-uppercase" to="/howtopay"
+                        >How to Pay</router-link
+                    >
                 </li>
+
+                <!-- <li class="nav-item text-center mx-5">
+                    <router-link class="nav-link text-uppercase" to="/profile">Profile</router-link>
+                </li> -->
 
                 <li v-if="isAuthen()" class="nav-item text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/orderlist"
