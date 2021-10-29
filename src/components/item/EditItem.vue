@@ -16,7 +16,7 @@
       </div>
       <div>
         Min stock :
-        <input type="number" v-model="item.min_stock" />
+        <input type="number" v-model="item.min_item" />
       </div>
       <div><button>Upload Image</button></div>
       <div><button @click="editItem">Edit</button></div>
@@ -48,13 +48,13 @@ export default {
         this.item.name != "" &&
         this.item.amount >= 1 &&
         this.item.price >= 1 &&
-        this.item.min_stock >= 1
+        this.item.min_item >= 1
       ) {
         let payload = {
           name: this.item.name,
           amount: this.item.amount,
           price: this.item.price,
-          min_item: this.item.min_stock,
+          min_item: this.item.min_item,
           id: this.id,
         };
         await ShopStore.dispatch("editItem", payload);

@@ -28,9 +28,9 @@
         Min stock :
         <input
           type="number"
-          name="min_stock"
+          name="min_item"
           placeholder="Min stock"
-          v-model="form.min_stock"
+          v-model="form.min_item"
         />
       </div>
       <div><button>Upload Image</button></div>
@@ -51,7 +51,7 @@ export default {
         name: "",
         amount: "",
         price: "",
-        min_stock: "",
+        min_item: "",
       },
     };
   },
@@ -61,13 +61,13 @@ export default {
         this.form.name != "" &&
         this.form.amount >= 1 &&
         this.form.price >= 1 &&
-        this.form.min_stock >= 1
+        this.form.min_item >= 1
       ) {
         let payload = {
           name: this.form.name,
           amount: this.form.amount,
           price: this.form.price,
-          min_item: this.form.min_stock,
+          min_item: this.form.min_item,
         };
         await ShopStore.dispatch("addItem", payload);
         this.$swal({ title: "Add Success!", icon: "success" });
