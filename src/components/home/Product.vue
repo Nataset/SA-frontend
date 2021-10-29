@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-4" id="flex-content">
+    <div class="mb-4 bg-white" id="flex-content">
         <img :src="picURL" class="mt-4" width="250" height="250" />
         <h4 class="mt-3">{{ title }}</h4>
         <h5 class="mt-1">Amount: {{ amount }}</h5>
