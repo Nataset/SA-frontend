@@ -70,7 +70,6 @@ export default {
                 address: address,
             };
             let res = await Axios.post(url, body);
-            console.log(res);
             if (res.status === 200) {
                 localStorage.setItem(auth_key, JSON.stringify(res.data));
                 return {

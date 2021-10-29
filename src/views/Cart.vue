@@ -65,7 +65,7 @@
                         <label class="text-success">{{ getTotalPrice().toFixed(2) }}</label>
                         บาท</label
                     >
-                    <button class="btn btn-success fs-4">เช็คเอาท์</button>
+                    <button class="btn btn-success fs-4" @click="checkout()">เช็คเอาท์</button>
                 </h3>
             </div>
         </div>
@@ -76,7 +76,8 @@
 </template>
 
 <script>
-import userCart from '@/store/Cart';
+import UserCart from '@/store/Cart';
+import ShopStore from '@/store/Shop';
 
 export default {
     name: 'Cart',
@@ -92,20 +93,20 @@ export default {
 
     methods: {
         setItemInCart() {
-            this.itemInCart = userCart.getters.itemInCart;
+            this.itemInCart = UserCart.getters.itemInCart;
         },
         addItemAmount(item_id) {
-            userCart.commit('addItemAmount', item_id);
+            UserCart.commit('addItemAmount', item_id);
             this.itemInCart = undefined;
             this.setItemInCart();
         },
         reduceItemAmount(item_id) {
-            userCart.commit('reduceItemAmount', item_id);
+            UserCart.commit('reduceItemAmount', item_id);
             this.itemInCart = undefined;
             this.setItemInCart();
         },
         removeItemInCart(item_id) {
-            userCart.commit('removeItemInCart', item_id);
+            UserCart.commit('removeItemInCart', item_id);
             this.setItemInCart();
         },
 
@@ -119,6 +120,18 @@ export default {
                 totalPrice += item.price * item.buyAmount;
             });
             return totalPrice;
+        },
+
+        async checkout() {
+            let payload = {
+                user_id: ShopStore.getters.currentUser.user.id,
+                total_order_price: this.getTotalPrice(),
+                item: this.itemInCart,
+            };
+
+            console.log(payload);
+
+            await UserCart.dispatch('checkout', payload);
         },
     },
 };
