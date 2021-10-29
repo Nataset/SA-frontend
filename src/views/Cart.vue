@@ -83,12 +83,15 @@ export default {
     name: 'Cart',
     data() {
         return {
+            items: [],
             itemInCart: [],
             placeholder: require('@/assets/box.png'),
         };
     },
-    mounted() {
+    async mounted() {
+        this.items = await ShopStore.dispatch('fetchItems');
         this.setItemInCart();
+        console.log(this.items);
     },
 
     methods: {
@@ -129,10 +132,16 @@ export default {
                 item: this.itemInCart,
             };
             let res = await UserCart.dispatch('checkout', payload);
-            UserCart.commit('resetItemInCart');
-            this.$swal('ทำการเช็คเอาท์สำเร็จ', 'กรุณาทำเรื่องชำระเงินต่อไป', 'success').then(() => {
-                this.$router.push('/howtopay');
-            });
+            if (res.status === 'success') {
+                UserCart.commit('resetItemInCart');
+                this.$swal('ทำการเช็คเอาท์สำเร็จ', 'กรุณาทำเรื่องชำระเงินต่อไป', 'success').then(
+                    () => {
+                        this.$router.push('/howtopay');
+                    },
+                );
+            } else {
+                this.$swal('ทำการเช็คเอาท์ไม่สำเร็จ', 'สินค้ามีจำนวนไม่มากพอ', 'error');
+            }
         },
     },
 };

@@ -61,8 +61,14 @@ export default new Vuex.Store({
     actions: {
         async checkout({ commit }, payload) {
             let url = `${end_point}/api/user/orders/add`;
-            let res = await axios.post(url, payload);
-            return res;
+            try {
+                let res = await axios.post(url, payload);
+                return res.data;
+            } catch (err) {
+                console.log('fail to checkout from cart');
+                console.error(err);
+                return res.data;
+            }
         },
     },
     modules: {},

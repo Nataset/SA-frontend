@@ -79,7 +79,6 @@ export default {
                 ? // edit url to product image
                   this.endPoint + '/' + this.item.image_path
                 : this.placeholder;
-            console.log(this.picURL);
         },
         fetchCurrentUserdata() {
             this.currentUser = ShopStore.getters.getCurrentUser;
