@@ -1,9 +1,17 @@
 <template>
-  <div>
-    <div>ชื่อ-นามสกุล : {{ user.firstname + " " + user.lastname }}</div>
-    <div>Email : {{ user.email }}</div>
-    <div>ที่อยู่ : {{ user.address }}</div>
-    <router-link to="/orderlist/all"><button>ย้อนกลับ</button></router-link>
+  <div class="user">
+    <div class="bg-light p-5 border border-secondary rounded-3">
+      <div class="row justify-content-center mt-2">
+        <div class="my-2">
+          ชื่อ-นามสกุล : {{ user.firstname + " " + user.lastname }}
+        </div>
+        <div class="my-2">Email : {{ user.email }}</div>
+        <div class="my-2">ที่อยู่ : {{ user.address }}</div>
+      </div>
+      <router-link to="/orderlist/all"
+        ><button class="btn btn-danger px-5 mt-4">ย้อนกลับ</button></router-link
+      >
+    </div>
   </div>
 </template>
 
@@ -48,4 +56,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.user {
+  margin-top: 10%;
+  margin-left: 30%;
+  margin-right: 30%;
+  display: block;
+}
+</style>
