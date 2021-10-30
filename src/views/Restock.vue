@@ -50,10 +50,22 @@
                 <div class="col-5">
                     <input
                         type="number"
-                        name="min_item"
+                        name="Buy Amount"
                         placeholder="Min stock"
                         class="form-control"
                         v-model="buyAmount"
+                    />
+                </div>
+            </div>
+            <div class="row justify-content-center mt-2">
+                <label class="col-3 form-label align-self-center">ค่าจัดส่ง :</label>
+                <div class="col-5">
+                    <input
+                        type="number"
+                        name="min_item"
+                        placeholder="Transport cost"
+                        class="form-control"
+                        v-model="shipCost"
                     />
                 </div>
             </div>
@@ -79,8 +91,8 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-5">
-                <button class="btn btn-success d-inline w-25 mx-5">ยืนยัน</button>
-                <button class="btn btn-danger d-inline w-25 mx-5">ยกเลิก</button>
+                <button class="btn btn-success d-inline w-25 mx-5" @click="onAdd">ยืนยัน</button>
+                <button class="btn btn-danger d-inline w-25 mx-5" @click="onCancel">ยกเลิก</button>
             </div>
         </div>
     </div>
@@ -100,6 +112,7 @@ export default {
             supplierWord: 'เลือก Supplier',
             buyPrice: '',
             buyAmount: '',
+            shipCost: '',
             endPoint: ShopStore.getters.endPoint,
             placeholder: require('@/assets/box.png'),
         };
@@ -129,6 +142,104 @@ export default {
 
         getValidImageUrl(url) {
             return url ? `${this.endPoint}/${url}` : this.placeholder;
+        },
+
+        async createNewRestockOrder({
+            ship_price,
+            supplier_id,
+            total_restock_price,
+            item_id,
+            buyAmount,
+            buyPrice,
+            total_item_price,
+        }) {
+            let url = this.endPoint + '/api/restock/add';
+            console.log(url);
+            let body = {
+                supplier_id: supplier_id,
+                ship_price: ship_price,
+                total_restock_price: total_restock_price,
+                item_id: item_id,
+                buyAmount: buyAmount,
+                buyPrice: buyPrice,
+                total_item_price: total_item_price,
+            };
+
+            try {
+                let res = await axios.post(url, body);
+                console.log(res.data);
+                return { status: 'success', data: res.data };
+            } catch (err) {
+                console.log('fail to create new Restock Order');
+                console.error(err);
+                return { status: 'fail' };
+            }
+        },
+
+        async onAdd() {
+            this.$swal({
+                title: 'คุณแน่ใจที่สั่ง Stock เพิ่มใช่ไหม',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then(async result => {
+                if (result) {
+                    if (this.validateData()) {
+                        let total_restock_price = (
+                            this.buyAmount * this.buyPrice +
+                            parseFloat(this.shipCost)
+                        ).toFixed(2);
+                        let total_item_price = (this.buyAmount * this.buyPrice).toFixed(2);
+                        let payload = {
+                            ship_price: parseFloat(this.shipCost).toFixed(2),
+                            supplier_id: this.supplier.id,
+                            total_restock_price: total_restock_price,
+                            item_id: this.item_id,
+                            buyAmount: this.buyAmount,
+                            buyPrice: parseFloat(this.buyPrice).toFixed(2),
+                            total_item_price: total_item_price,
+                        };
+                        console.log(payload);
+                        let res = await this.createNewRestockOrder(payload);
+                        res.status == 'success'
+                            ? this.uploadSccessHandler()
+                            : this.uploadFailHandler();
+                    } else {
+                        this.$swal(
+                            'สั่ง Stock ไม่สำเร็จ',
+                            'โปรดใส่ข้อมูลที่จำเป็นให้ครบก่อนกดยืนยัน หรือข้อมูลผิดพลาด',
+                            'error',
+                        );
+                    }
+                }
+            });
+        },
+
+        onCancel() {},
+
+        validateData() {
+            return (
+                this.supplier.id &&
+                !this.hasDecimal(this.buyAmount) &&
+                this.buyAmount > 0 &&
+                this.buyPrice > 0 &&
+                this.item_id &&
+                this.shipCost >= 0
+            );
+        },
+
+        uploadFailHandler() {
+            this.$swal('สั่ง Stock ไม่สำเร็จ', 'สั่ง Stock ไม่สำเร็จผิดพลาดโปรดลองใหม่', 'error');
+        },
+
+        uploadSccessHandler() {
+            this.$swal('สั่ง Stock สำเร็จ', '', 'success').then(() => {
+                this.$router.push('/');
+            });
+        },
+
+        hasDecimal(num) {
+            return !!(num % 1);
         },
     },
 };
