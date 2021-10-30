@@ -38,7 +38,6 @@
 <script>
 import ShopStore from '@/store/Shop';
 import axios from 'axios';
-import Shop from '../store/Shop';
 
 export default {
     name: 'RestockOrder',
@@ -78,7 +77,6 @@ export default {
                     orderShow = order;
                 }
             });
-            console.log(orderShow);
             this.$swal({
                 icon: 'info',
                 title: 'Order ID : ' + orderShow.id,

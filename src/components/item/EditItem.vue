@@ -50,6 +50,43 @@
                     />
                 </div>
             </div>
+
+            <div class="row justify-content-center mt-3">
+                <div class="dropdown col-3 text-center">
+                    <button
+                        class="btn btn-secondary dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        เลือก Supplier
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li v-for="supplier in suppliers" :key="supplier.id">
+                            <a
+                                class="dropdown-item btn"
+                                @click="selectSuppliersHandler(supplier)"
+                                >{{ supplier.name }}</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4 pb-2" v-if="selectSuppliers.length !== 0">
+                <div class="col-5 align-self-center">
+                    <label class="form-label ">Supplier ที่ถูกเลือกแล้ว :</label>
+
+                    <ul
+                        class="list-group"
+                        v-for="(supplier, index) in selectSuppliers"
+                        :key="index"
+                    >
+                        <li class="list-group-item">{{ supplier.name }}</li>
+                    </ul>
+                </div>
+            </div>
+
             <div class="d-flex justify-content-center mt-5">
                 <button class="btn btn-success d-inline w-25 mx-5" @click="editItem">ยืนยัน</button>
                 <button class="btn btn-danger d-inline w-25 mx-5" @click="onCancel">ยกเลิก</button>
@@ -60,6 +97,9 @@
 
 <script>
 import ShopStore from '@/store/Shop';
+import SupplierStore from '@/store/supplier';
+import axios from 'axios';
+
 export default {
     props: {
         id: '',
@@ -67,11 +107,15 @@ export default {
     data() {
         return {
             item: {},
+            selectSuppliers: [],
+            suppliers: [],
         };
     },
     async created() {
-        await ShopStore.dispatch('getItemById', this.id);
-        this.item = ShopStore.getters.editItem;
+        await this.fetchItem();
+        await this.fetchSuppliers();
+        console.log(this.item);
+        console.log(this.selectSuppliers);
     },
     methods: {
         async editItem() {
@@ -79,7 +123,8 @@ export default {
                 this.item.name != '' &&
                 this.item.amount >= 1 &&
                 this.item.price >= 1 &&
-                this.item.min_item >= 1
+                this.item.min_item >= 1 &&
+                this.selectSuppliers.length >= 1
             ) {
                 let payload = {
                     name: this.item.name,
@@ -87,6 +132,7 @@ export default {
                     price: this.item.price,
                     min_item: this.item.min_item,
                     id: this.id,
+                    selectSuppliers: this.selectSuppliers,
                 };
                 await ShopStore.dispatch('editItem', payload);
                 this.$swal({ title: 'แก้ไขสินค้าสำเร็จ!', icon: 'success' });
@@ -111,6 +157,29 @@ export default {
                     this.$router.push('/');
                 }
             });
+        },
+
+        async fetchItem() {
+            await ShopStore.dispatch('getItemById', this.id);
+            this.item = ShopStore.getters.editItem;
+            this.selectSuppliers = JSON.parse(JSON.stringify(this.item.suppliers));
+        },
+
+        async fetchSuppliers() {
+            await SupplierStore.dispatch('fetchSuppliers');
+            this.suppliers = SupplierStore.getters.suppliers;
+        },
+
+        selectSuppliersHandler(supplier) {
+            let find = false;
+            this.selectSuppliers.forEach(seleted => {
+                if (seleted.id === supplier.id) {
+                    find = true;
+                }
+            });
+            find
+                ? (this.selectSuppliers = this.selectSuppliers.filter(e => e.id !== supplier.id))
+                : this.selectSuppliers.push(supplier);
         },
     },
 };
