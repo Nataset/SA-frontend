@@ -25,7 +25,11 @@
                         <button @click="infoHandler(order.id)" class="btn btn-primary">
                             เพิ่มเติม
                         </button>
-                        <button @click="statusHandler(order.id)" class="btn btn-warning ms-1">
+                        <button
+                            @click="statusHandler(order.id)"
+                            v-if="!order.status == 'finished'"
+                            class="btn btn-warning ms-1"
+                        >
                             เปลี่ยนสถานะ
                         </button>
                     </td>
