@@ -88,6 +88,7 @@ export default {
             formData.append('image', imageFile);
             try {
                 let res = await axios.post(url, formData);
+                console.log(res);
                 return res.data;
             } catch (err) {
                 console.log('WTF');

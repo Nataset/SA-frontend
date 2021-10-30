@@ -16,6 +16,7 @@ import AdminOrderList from '../views/AdminOrderList.vue';
 import UserDetail from '../views/UserDetail.vue';
 import OrderReceipt from '../views/OrderReceipt';
 import RestockOrder from '../views/RestockOrder';
+import Restock from '../views/Restock';
 
 Vue.use(VueRouter);
 
@@ -97,9 +98,14 @@ const routes = [
         component: OrderReceipt,
     },
     {
-        path: '/restockorder',
+        path: '/restocklist',
         name: 'RestockOrder',
         component: RestockOrder,
+    },
+    {
+        path: '/restock/:id',
+        name: 'Restock',
+        component: Restock,
     },
 ];
 

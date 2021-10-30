@@ -5,7 +5,12 @@
         <h5 class="mt-1">Amount: {{ amount }}</h5>
         <h5 class="mt-1">Price: {{ price.toFixed(2) }} Baht</h5>
         <div class="d-grid gap-2 col-8 mx-auto">
-            <button type="button" class="btn btn-danger mb-2" v-if="isAdmin()">
+            <button
+                type="button"
+                class="btn btn-danger mb-2"
+                v-if="isAdmin()"
+                @click="onRestock(item.id)"
+            >
                 Restock
             </button>
             <button type="button" class="btn btn-danger mb-4" v-if="isAdmin()" @click="edit(item)">
@@ -82,6 +87,10 @@ export default {
         },
         fetchCurrentUserdata() {
             this.currentUser = ShopStore.getters.getCurrentUser;
+        },
+
+        onRestock(item_id) {
+            this.$router.push('/restock/' + item_id);
         },
 
         edit(item) {
