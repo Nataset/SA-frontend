@@ -6,7 +6,7 @@
                     <th class="col-1" scope="col">Order ID</th>
                     <th class="col-1" scope="col">ประเภทสินค้า</th>
                     <th class="col-2" scope="col ">ราคาของสินค้าทั้งหมด</th>
-                    <th class="col-2 text-start" scope="col">วันที่สร้างคำสั้งซื้อ</th>
+                    <th class="col-2 text-start" scope="col">วันที่สร้างคำสั่งซื้อ</th>
                     <th class="col-1" scope="col">Status</th>
                     <th class="col-2" scope="col "></th>
                 </tr>
@@ -22,7 +22,7 @@
                         <button @click="infoHandler(order.id)" class="btn btn-primary">
                             เพิ่มเติม
                         </button>
-                        <button @click="receiptHandler(order.id)" class="btn btn-warning ms-1">
+                        <button @click="receiptHandler(order.id)" class="btn btn-warning ms-1" v-if="order.status != 'finished'">
                             ยืนยันการโอนเงิน
                         </button>
                     </td>

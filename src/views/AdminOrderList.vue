@@ -8,7 +8,7 @@
           <th class="col-2" scope="col "></th>
           <th class="col-1" scope="col">ประเภทสินค้า</th>
           <th class="col-2" scope="col ">ราคาของสินค้าทั้งหมด</th>
-          <th class="col-2 text-start" scope="col">วันที่สร้างคำสั้งซื้อ</th>
+          <th class="col-2 text-start" scope="col">วันที่สร้างคำสั่งซื้อ</th>
           <th class="col-1" scope="col">Status</th>
           <th class="col-2" scope="col "></th>
         </tr>
@@ -80,7 +80,7 @@ export default {
     },
 
     infoHandler(order_id) {
-      this.$router.push("/orderlist/order/" + order_id);
+      this.$router.push("/orderlist/order/admin/" + order_id);
     },
     userInfoHandler(user_id) {
       this.$router.push("/user/" + user_id);

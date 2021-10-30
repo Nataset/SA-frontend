@@ -6,9 +6,9 @@
                 <tr>
                     <th class="col-1" scope="col">Order ID</th>
                     <th class="col-1" scope="col">ชื่อสินค้า</th>
-                    <th class="col-1" scope="col ">จำนวนที่สั้งเพิ่ม</th>
+                    <th class="col-1" scope="col ">จำนวนที่สั่งเพิ่ม</th>
                     <th class="col-2" scope="col ">ราคารวม</th>
-                    <th class="col-2 text-start" scope="col">วันที่สร้างคำสั้งซื้อ</th>
+                    <th class="col-2 text-start" scope="col">วันที่สร้างคำสั่งซื้อ</th>
                     <th class="col-1" scope="col">สถานะ</th>
                     <th class="col-2" scope="col "></th>
                 </tr>
@@ -87,18 +87,18 @@ export default {
                 text: `สถานะ : ${orderShow.status}\n
                 ชื่อสินค้า : ${orderShow.items[0].name}\n
                 ชื่อ Supplier : ${orderShow.supplier.name}\n
-                จำนวนสินค้าที่สั้ง : ${orderShow.items[0].pivot.amount}\n
+                จำนวนสินค้าที่สั่ง : ${orderShow.items[0].pivot.amount}\n
                 ราคาของสินค้าต่อชิ้น : ${orderShow.items[0].pivot.buyPrice.toFixed(2)} บาท\n
                 ราคาของสินค้าทั้งหมด : ${orderShow.items[0].pivot.total_item_price.toFixed(2)} บาท\n
                 ค่าขนส่ง : ${orderShow.ship_price.toFixed(2)} บาท\n
                 ราคารวมทั้งหมด : ${orderShow.total_restock_price.toFixed(2)} บาท\n
-                วันที่สร้างคำสั้งซื้อ : ${this.dateFormat(orderShow.created_at)}`,
+                วันที่สร้างคำสั่งซื้อ : ${this.dateFormat(orderShow.created_at)}`,
             });
         },
 
         async statusHandler(order_id) {
             this.$swal({
-                title: 'คุณแน่ใจที่จะเปลี่ยนสถานะคำสั้งซื้อ',
+                title: 'คุณแน่ใจที่จะเปลี่ยนสถานะคำสั่งซื้อ',
                 icon: 'warning',
                 text: 'ถ้าเปลี่ยนสถานะแล้วจะไม่สามารถเปลี่ยนกลับได้!!',
                 buttons: true,
