@@ -64,7 +64,7 @@
             <h3 class="d-flex align-items-center p-2">
                 <label class="me-3"
                     >ราคาของสินค้าทั้งหมด :
-                    <label class="text-success">{{ order.total_order_price.toFixed(2) }}</label>
+                    <label class="text-success">{{ total_price }}</label>
                     บาท</label
                 >
             </h3>
@@ -81,18 +81,20 @@ export default {
     data() {
         return {
             order_id: '',
+            total_price: '',
             endPoint: ShopStore.getters.endPoint,
             placeholder: 'https://via.placeholder.com/200x200',
             order: {},
         };
     },
-    async created() {
+    async mounted() {
         if (!this.isAuthen()) {
             this.$swal('You are not logged.', 'Please login and go to this page again', 'error');
             this.$router.push('/login');
         }
         this.order_id = this.$route.params.id;
         await this.fetchOrderDetail();
+        this.total_price = this.order.total_order_price.toFixed(2);
     },
     methods: {
         isAuthen() {

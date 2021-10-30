@@ -60,7 +60,6 @@ export default {
             try {
                 let res = await axios.post(url, { status: status });
                 this.orderList = res.data;
-                console.log(res.data);
             } catch (err) {
                 console.log('error at fetchOrderData');
                 console.error(err);
