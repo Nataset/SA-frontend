@@ -2,8 +2,8 @@
     <div class="mb-4 bg-white" id="flex-content">
         <img :src="picURL" class="mt-4" width="250" height="250" />
         <h4 class="mt-3">{{ title }}</h4>
-        <h5 class="mt-1">Amount: {{ amount }}</h5>
-        <h5 class="mt-1">Price: {{ price.toFixed(2) }} Baht</h5>
+        <h5 class="mt-1">จำนวน: {{ amount }}</h5>
+        <h5 class="mt-1">ราคา: {{ price.toFixed(2) }} บาท</h5>
         <div class="d-grid gap-2 col-8 mx-auto">
             <button
                 type="button"
@@ -21,7 +21,7 @@
                 @click="addItemToCart"
                 v-if="!isAdmin()"
             >
-                Add to Cart
+                ใส่ในตะตร้า
             </button>
         </div>
     </div>
@@ -56,8 +56,15 @@ export default {
         },
 
         addItemToCart() {
-            userCart.commit('addItemInCart', this.item);
-            this.$swal(`เพิ่มสินค้าสำเร็จ`, `เพิ่ม ${this.title} 1 จำนวนลงใน Cart`, 'success');
+            if (!this.isAuthen()) {
+                console.log('TEST');
+                this.$swal('กรุณา login ก่อน', '', 'error').then(() => {
+                    this.$router.push('/login');
+                });
+            } else {
+                userCart.commit('addItemInCart', this.item);
+                this.$swal(`เพิ่มสินค้าสำเร็จ`, `เพิ่ม ${this.title} 1 จำนวนลงใน Cart`, 'success');
+            }
         },
         isAdmin() {
             return ShopStore.getters.isAdmin;

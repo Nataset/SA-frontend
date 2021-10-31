@@ -114,6 +114,11 @@ const routes = [
         name: 'Test',
         component: Test,
     },
+    {
+        path: '/orderlist/order/admin/:id',
+        name: 'adminOrderDetail',
+        component: AdminOrderDetail,
+    },
 ];
 
 const router = new VueRouter({
