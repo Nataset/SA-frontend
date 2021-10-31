@@ -22,7 +22,7 @@
                             LOGIN
                         </button>
                     </router-link>
-                    <router-link to="/cart">
+                    <router-link to="/cart" v-if="!isAdmin()">
                         <button
                             id="cart"
                             type="button"

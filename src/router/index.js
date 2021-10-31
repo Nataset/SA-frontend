@@ -17,6 +17,7 @@ import UserDetail from '../views/UserDetail.vue';
 import OrderReceipt from '../views/OrderReceipt';
 import RestockOrder from '../views/RestockOrder';
 import Restock from '../views/Restock';
+import Test from '../views/test';
 
 Vue.use(VueRouter);
 
@@ -106,6 +107,11 @@ const routes = [
         path: '/restock/:id',
         name: 'Restock',
         component: Restock,
+    },
+    {
+        path: '/test',
+        name: 'Test',
+        component: Test,
     },
 ];
 
