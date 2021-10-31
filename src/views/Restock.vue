@@ -478,7 +478,18 @@ export default {
             });
         },
 
-        onCancel() {},
+        onCancel() {
+            this.$swal({
+                title: 'คุณแน่ใจที่จะยกเลิกการสั่ง Stock สินค้า',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then(result => {
+                if (result) {
+                    this.$router.push('/');
+                }
+            });
+        },
 
         validateData() {
             return (
