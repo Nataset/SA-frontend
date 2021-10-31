@@ -309,7 +309,7 @@
                     <input
                         type="number"
                         name="Buy Amount"
-                        placeholder="Min stock"
+                        placeholder="Amount"
                         class="form-control"
                         v-model="buyAmount"
                     />
@@ -390,7 +390,6 @@ export default {
         }
         this.item_id = this.$route.params.id;
         await this.fetchItem();
-        console.log(this.$refs['test'].innerHTML);
     },
     methods: {
         isAdmin() {
@@ -400,7 +399,6 @@ export default {
             let url = this.endPoint + '/api/items/' + this.item_id;
             let res = await axios(url);
             this.item = res.data;
-            console.log(res.data);
         },
 
         onSelectSupplier(supplier) {
@@ -422,7 +420,6 @@ export default {
             total_item_price,
         }) {
             let url = this.endPoint + '/api/restock/add';
-            console.log(url);
             let body = {
                 supplier_id: supplier_id,
                 ship_price: ship_price,
@@ -435,7 +432,6 @@ export default {
 
             try {
                 let res = await axios.post(url, body);
-                console.log(res.data);
                 return { status: 'success', data: res.data };
             } catch (err) {
                 console.log('fail to create new Restock Order');
@@ -467,7 +463,6 @@ export default {
                             buyPrice: parseFloat(this.buyPrice).toFixed(2),
                             total_item_price: total_item_price,
                         };
-                        console.log(payload);
                         let res = await this.createNewRestockOrder(payload);
                         res.status == 'success'
                             ? this.uploadSccessHandler(res.data)
@@ -502,7 +497,6 @@ export default {
 
         uploadSccessHandler(resOrder) {
             this.resOrder = resOrder;
-            console.log(resOrder);
             this.$swal('สั่ง Stock สำเร็จ', '', 'success').then(() => {
                 this.$swal({
                     title: 'คุณจะดาวน์โหลดใบสั่งซื้อ stock สินค้าไหม',
