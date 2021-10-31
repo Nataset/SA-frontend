@@ -13,6 +13,7 @@ import EditItem from '../views/EditItem.vue';
 import Howtopay from '../views/Howtopay.vue';
 import OrderDetail from '../views/OrderDetail.vue';
 import AdminOrderList from '../views/AdminOrderList.vue';
+import AdminOrderDetail from '../views/AdminOrderDetail.vue';
 import UserDetail from '../views/UserDetail.vue';
 import OrderReceipt from '../views/OrderReceipt';
 import RestockOrder from '../views/RestockOrder';
